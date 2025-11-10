@@ -1,0 +1,6 @@
+                               | GA      | Wrapper | Baseline
+-------------------------------+---------+---------+---------
+Acurácia                       |         |         |         
+Porcentagem de features        |         |         | 100     
+Tempo de treinamento           |         |         |         
+Tempo para busca das features  |         |         | 0s      
