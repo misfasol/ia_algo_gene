@@ -25,47 +25,51 @@ def tree_ga():
 def tree_wrapper():
     melhores_features = []
     melhor_acuracia = 0
-    tempo_treinamento = 0
     iteracao = 0
     inicio = time()
-    while True:
+    while iteracao < 2:
         iteracao += 1
         melhorou = False
+        melhor_agora = 0
         print(f"{iteracao = }")
+        inicio_iteracao = time()
         features_agora = melhores_features.copy()
         for feature_i in range(treino_dados.shape[1]):
             if feature_i in melhores_features:
                 continue
-            novas_features = features_agora.copy()
-            novas_features.append(feature_i)
-            clf = DecisionTreeClassifier()
-            adicionado = treino_dados.iloc[:, novas_features]
-            treino_inicio = time()
-            # print(feature_i)
+            if feature_i % 100 == 0:
+                print(feature_i, iteracao)
+            features_agora.append(feature_i)
+            clf = DecisionTreeClassifier(random_state=0)
+            adicionado = treino_dados.iloc[:, features_agora]
             clf.fit(adicionado, treino_labels)
-            # print("terminou treino", feature_i)
-            tempo_treino = time() - treino_inicio
-            acuracia = clf.score(teste_dados.iloc[:, novas_features], teste_labels)
-            # print("acuracia", feature_i, acuracia)
+            acuracia = clf.score(teste_dados.iloc[:, features_agora], teste_labels)
+            features_agora.pop()
             if acuracia > melhor_acuracia:
                 melhor_acuracia = acuracia
-                melhores_features = novas_features
-                tempo_treinamento = tempo_treino
+                melhor_agora = feature_i
                 melhorou = True
+        if not melhorou:
+            break
+        else:
+            melhores_features.append(melhor_agora)
+        print(f"tempo_iteracao: {time() - inicio_iteracao}")
         print(f"{iteracao = }")
         print(f"{melhor_acuracia = }")
         print(f"{melhores_features = }")
-        if not melhorou:
-            break
+            
     tempo_total = time() - inicio
-    # print(melhor_acuracia, melhores_features)
-    print(f"{melhor_acuracia = }")
+    inicio = time()
+    _ = DecisionTreeClassifier(random_state=0).fit(treino_dados.iloc[:, melhores_features], treino_labels)
+    tempo_treinamento = time() - inicio
     porcentagem = len(melhores_features) / treino_dados.shape[1]
-    print(f"{porcentagem = }")
-    print(f"{tempo_treinamento = }")
-    print(f"{tempo_total = }")
 
     print("Wrapper")
+    print(f"acuracao = {melhor_acuracia}")
+    print(f"porcentagem_features = {porcentagem}")
+    print(f"tempo_treino = {tempo_treinamento}")
+    print(f"tempo_busca_features = {tempo_total}")
+
 
 
 def tree_baseline():
@@ -75,9 +79,9 @@ def tree_baseline():
     tempo_treino = time() - a
     acuracia = clf.score(teste_dados, teste_labels) * 100
     print("Baseline")
-    print(f"{acuracia = }")
+    print(f"acuracia = {acuracia}")
     print(f"porcentagem_features = 100")
-    print(f"{tempo_treino = }")
+    print(f"tempo_treino = {tempo_treino}")
     print(f"tempo_busca_features = 0")
 
 
