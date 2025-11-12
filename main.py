@@ -37,7 +37,7 @@ def tree_wrapper():
     melhor_acuracia = 0
     iteracao = 0
     inicio = time()
-    while iteracao < 2:
+    while iteracao < 23:
         iteracao += 1
         melhorou = False
         melhor_agora = 0
@@ -47,8 +47,8 @@ def tree_wrapper():
         for feature_i in range(treino_dados.shape[1]):
             if feature_i in melhores_features:
                 continue
-            if feature_i % 100 == 0:
-                print(feature_i, iteracao)
+            # if feature_i % 100 == 0:
+            #     print(feature_i, iteracao)
             features_agora.append(feature_i)
             clf = DecisionTreeClassifier(random_state=0)
             adicionado = treino_dados.iloc[:, features_agora]
@@ -69,10 +69,11 @@ def tree_wrapper():
         print(f"{melhores_features = }")
             
     tempo_total = time() - inicio
+    # melhores_features = [434, 437, 350, 542, 625, 346, 238, 182, 485, 516, 298, 321, 268, 578, 371, 658, 329, 178, 431, 290, 273, 399, 215]
     inicio = time()
     _ = DecisionTreeClassifier(random_state=0).fit(treino_dados.iloc[:, melhores_features], treino_labels)
     tempo_treinamento = time() - inicio
-    porcentagem = len(melhores_features) / treino_dados.shape[1]
+    porcentagem = (len(melhores_features) / treino_dados.shape[1]) * 100
 
     print("Wrapper")
     print(f"acuracao = {melhor_acuracia}")
@@ -87,7 +88,7 @@ def tree_baseline():
     a = time()
     clf.fit(treino_dados, treino_labels)
     tempo_treino = time() - a
-    acuracia = clf.score(teste_dados, teste_labels) * 100
+    acuracia = clf.score(teste_dados, teste_labels)
     print("Baseline")
     print(f"acuracia = {acuracia}")
     print(f"porcentagem_features = 100")

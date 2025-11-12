@@ -1,6 +1,7 @@
                                | GA      | Wrapper | Baseline
 -------------------------------+---------+---------+---------
-Acurácia                       |         |         |         
-Porcentagem de features        |         |         | 100     
-Tempo de treinamento           |         |         |         
-Tempo para busca das features  |         |         | 0s      
+Acurácia                       | 0.8741  | 0.8431  | 0.878   
+Porcentagem de features        | 40.31   | 2.93    | 100     
+Tempo de treinamento           | 12.57s  | 0.507s  | 12.36   
+Tempo para busca das features  | 37m9s   | 1h55m   | 0s      
+
